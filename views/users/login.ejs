@@ -1,20 +1,45 @@
 <% include('../layouts/header.ejs') %>
-<h1>login</h1>
-<% 
-if (typeof message !== 'undefined') {
-    %>
-<h4> <% message %> </h4>
-    <%
-}
 
-%> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-<form action="/login" method="post">
-    <input type="email" name="email" required placeholder="Enter email">
-    <br><br>
-    <input type="password" name="password"required placeholder="Enter password">
-    <br><br>
-    <input type="submit" value="login">
-</form>
-<a href="/forget">forget password</a>
-<% include('../layouts/footer.ejs') %>  
+    <div class="b">
+
+    </div>
+    <div class="container text-center ">
+
+        <p class="h1 text-primary my-3 fw-bold">Please login </p>
+       
+                <form action="/login" method="post">
+                    <input type="email" name="email" required placeholder="Enter email">
+                    <br><br>
+                    <input type="password" name="password" required placeholder="Enter password">
+                    <br><br>
+                    <% if (typeof message !=='undefined' ) { %>
+                        <p class="h5 text-danger">
+
+                            <%= message %>
+                        </p>
+                            
+                        <% } %>
+                        <br>
+                    <input type="submit" class="btn btn-success" value="login">
+                    <a href="/forget" class="btn btn-danger">forget password</a>
+
+                </form>
+
+                <p class="h5">New user ?</p>
+                <a href="/register"><span class="btn btn-success">Register</span> </a>
+
+
+                <a href="/verification" class="btn btn-dark">Verify E-mail</a>
+
+
+
+
+
+
+    </div>
+
+
+    <% include('../layouts/footer.ejs') %>

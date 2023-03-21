@@ -1,0 +1,34 @@
+<% include('../layouts/header.ejs') %>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<div class="container text-center">
+
+    <p class="h1 text-secondary my-3 fw-bold">Update user data</p>
+
+    
+    <img src="userImages/<%= user.image  %>" width="100px" height="100px" alt="">
+    
+    <form action="" method="POST" enctype="multipart/form-data">
+    
+    
+        <input type="File" name="image">
+    
+        <input type="hidden" name="user_id" value="<%= user._id %>">
+        <br><br>
+    
+        <input type="text" name="name" value="<%= user.name %>" placeholder="Enter Name" required>
+        <br><br>
+    
+        <input type="email" name="email" value="<%= user.email %>" placeholder="Enter email" required>
+        <br><br>
+    
+        <input type="text" name="mno" value="<%= user.mobile %>" placeholder="Enter Mobile no" required>
+        <br><br>
+    
+        <input type="submit" class="btn btn-success" value="update profile">
+    
+    </form>
+</div>
+
+    <% include('../layouts/footer.ejs') %>

@@ -36,7 +36,7 @@ const sendVerifyMail = async (name, email, user_id) => {
             from: 'abhitekalar21@gmail.com',
             to: email,
             subject: 'for verification mail',
-            html: '<p>Hii ' + name + ', please click here to <a href="http://localhost:3000/verify?id=' + user_id + '"> verify </a> your mail.</p>'
+            html: '<p>Hii ' + name + ', please click here to <a href="http://localhost:5566/verify?id=' + user_id + '"> verify </a> your mail.</p>'
         }
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -72,7 +72,7 @@ const sendResetPasswordMail = async (name, email, token) => {
             from: config.emailUser,
             to: email,
             subject: 'for Reset password',
-            html: '<p>Hii ' + name + ', please click here to <a href="http://localhost:3000/forget-password?token=' + token + '"> reset </a> your password.</p>'
+            html: '<p>Hii ' + name + ', please click here to <a href="http://localhost:5566/forget-password?token=' + token + '"> reset </a> your password.</p>'
         }
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -147,10 +147,11 @@ const loginLoad = async (req, res) => {
 // 1.pass is diff
 // 2.user and pass are ryt but mail is not verified
 // 3. email doesnt exist 
-const verifyLogin = async (req, res) => {
+const verifyLogin = async(req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
+        
         const userData = await User.findOne({ email: email });
         if (userData) {
 
@@ -165,12 +166,12 @@ const verifyLogin = async (req, res) => {
 
             }
             else {
-                res.render('login', { message: "Email and password is incorrect" });
+                res.render('login', { message: "Password is incorrect !!" });
             }
 
         }
         else {
-            res.render('login', { message: "Email and password is incorrect" });
+            res.render('login', { message: "Email and password is incorrect !!" });
         }
 
 
@@ -181,7 +182,8 @@ const verifyLogin = async (req, res) => {
 }
 const loadHome = async (req, res) => {
     try {
-        res.render('home');
+        const userData = await User.findById({ _id: req.session.user_id });
+        res.render('home', { user: userData });
     } catch (error) {
         console.log(error.message);
     }
@@ -203,9 +205,6 @@ const forgetLoad = async (req, res) => {
     }
 }
 
-
-
-
 const forgetVerify = async (req, res) => {
     try {
         const email = req.body.email;
@@ -213,7 +212,7 @@ const forgetVerify = async (req, res) => {
         if (userData) {
 
             if (userData.is_varified === 0) {
-                res.render('forget', { message: 'please verify your mail'});
+                res.render('forget',{message: "please verify your mail" });
 
 
             }
@@ -222,48 +221,105 @@ const forgetVerify = async (req, res) => {
                 const updatedData = await User.updateOne({ email: email }, { $set: { token: randomString } });
                 sendResetPasswordMail(userData.name, userData.email, randomString);
 
-                res.render('forget', { message:'Please check your mail to reset your password'});
+                res.render('forget',{message: "Please check your mail to reset your password" });
 
             }
         }
         else {
-            res.render('forget', { message: 'e-Mail is incorrect'});
+            res.render('forget',{message: "e-Mail is incorrect" });
 
         }
     } catch (error) {
         console.log(error.message);
     }
 }
-const forgetPasswordLoad = async (req,res) =>{
+const forgetPasswordLoad = async (req, res) => {
     try {
-const token = req.query.token;
-const tokenData = await User.findOne({token:token});
-if(tokenData){
-    res.render('forget-password',{user_id:tokenData._id});
-}
-else{
-    res.render('404',{message:"token is invalid"});
-   
-    // res.json({ message: "Register the user" });
-}
+        const token = req.query.token;
+        const tokenData = await User.findOne({ token: token });
+        if (tokenData) {
+            res.render('forget-password', { user_id: tokenData._id });
+        }
+        else {
+            res.render('404', { message: "token is invalid" });
 
-         
+            // res.json({ message: "Register the user" });
+        }
+
+
     } catch (error) {
         console.log(error.message);
     }
 }
-const resetPassword = async(req,res)=>{
+const resetPassword = async (req, res) => {
     try {
         const password = req.body.password;
         const user_id = req.body.user_id;
         const secure_password = await securePassword(password);
-        const updatedData = await User.findByIdAndUpdate({_id:user_id},{$set:{password:secure_password,token:''}});
+        const updatedData = await User.findByIdAndUpdate({ _id: user_id }, { $set: { password: secure_password, token: '' } });
         res.redirect("/");
 
 
     } catch (error) {
         console.log(error.message);
     }
+}
+//for verification of mail on login page
+const verificationLoad = async (req, res) => {
+    try {
+        res.render('verification');
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const sentVerificationLink = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const userData = await User.findOne({ email: email });
+        if (userData) {
+            sendVerifyMail(userData.name, userData.email, userData._id);
+            res.render('verification', { message: "Verification mail sent to your mail" })
+        }
+        else {
+            res.render('verification', { message: "email doe3snt exist" });
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+//for user profile edit & update
+
+const editLoad = async (req, res) => {
+    try {
+        const id = req.query.id;
+        //we are using query to fetch data from url
+        const userData = await User.findById({ _id: id });
+
+        if (userData) {
+            res.render('edit', { user: userData });
+
+        } else {
+            res.redirect('/home');
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+const updateProfile = async (req, res) => {
+    try {
+        if (req.file) {
+            const userData = await User.findByIdAndUpdate({ _id: req.body.user_id }, { $set: { name: req.body.name, email: req.body.email, mobile: req.body.mno, image: req.file.filename } });
+
+        } else {
+            const userData = await User.findByIdAndUpdate({ _id: req.body.user_id }, { $set: { name: req.body.name, email: req.body.email, mobile: req.body.mno } });
+
+
+        }
+        res.redirect('/home');
+    } catch (error) {
+        console.log(error.message);
+    }
+
 }
 module.exports = {
     loadregister,
@@ -276,5 +332,10 @@ module.exports = {
     forgetLoad,
     forgetVerify,
     forgetPasswordLoad,
-    resetPassword
+    resetPassword,
+    verificationLoad,
+    sentVerificationLink,
+    editLoad,
+    updateProfile
 }
+

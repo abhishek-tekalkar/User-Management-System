@@ -1,10 +1,10 @@
 <% include('../layouts/header.ejs') %>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 
-<div class="container text-center ">
-    <p class="h1 text-danger my-3 fw-bold">Forget Password !!</p>
+<div class="container text-center">
+    <p class="h1 text-secondary my-3 fw-bold">Verification of E-mail</p>
+
 <% 
 if (typeof message !== 'undefined') {
     %>
@@ -14,13 +14,12 @@ if (typeof message !== 'undefined') {
 
 %> 
 
-<form action="/forget" method="post">
+<form action="" method="post">
     <input type="email" name="email" required placeholder="Enter email">
     <br><br>
   
-    <input type="submit" class="btn btn-Dark" value="send reset link">
+    <input type="submit" class="btn btn-success" value="send verification link" >
 </form>
-
-
 </div>
+
 <% include('../layouts/footer.ejs') %>  

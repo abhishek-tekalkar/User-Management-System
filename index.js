@@ -9,8 +9,8 @@ const userRoute = require('./routes/userRoute');
 app.use('/', userRoute);
 
 
-app.listen(3000, function () {
-    console.log("server is running on 3000");
+app.listen(5566, function () {
+    console.log("server is running on 5566");
 })
 
 //first make model
