@@ -1,4 +1,5 @@
 // controller connects model and view 
+// controller handles all methods. 
 const User = require("../models/userModel");
 // creating methods which takes data from model and sent it to the mongodb 
 const bcrypt = require('bcrypt');

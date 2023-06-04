@@ -1,0 +1,67 @@
+<% include("../layouts/header.ejs") %>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <div class="container text-center my-3">
+        <p><span class="h2 text-primary fw-bold">Dashboard</span></p>
+          
+        <a href="/admin/new-user" class="btn btn-secondary">Add New User</a>
+        <a href="/admin/home" class="btn btn-danger">Go to Home</a>
+        <br><br>
+        
+        <table class="table  my-3 mx-5 ">
+          <tr class="table-info">
+      <th>Name</th>
+      <th>Email</th>
+        <th>Mobile</th>
+        <th>Image</th>
+        <th>Verified</th>
+        <th>Actions</th>
+      </tr>
+      
+      <% 
+       if(users.length > 0){
+         for(let i=0;i<users.length;i++){
+           %>
+           <tr class="table-Warning">
+                <td class="fw-bold"><%= users[i].name %></td>
+                <td class="fw-bold"><%= users[i].email %></td>
+                <td class="fw-bold"><%= users[i].mobile %></td>
+                <td class="fw-bold"> <img src="/userImages/<%= users[i].image %>" alt="<%= users[i].image %>" width="100px" height="100px"></td>
+                <td class="fw-bold"><%
+                    if(users[i].is_varified == 0){
+                      %>
+                      <p>Not Verified</p>
+                      <%
+                    } 
+                    else{
+                      %>
+                      <p>Verified</p>
+                      
+                      <%
+                    }
+                    %></td>
+                    <td class="fw-bold">
+                       <a href="/admin/edit-user?id=<%= users[i]._id %>">Edit</a>
+                       <a href="/admin/delete-user?id=<%= users[i]._id %>">Delete</a>
+                      </td>
+                </tr>
+                <%
+           }
+       }
+       else{
+         %>
+         <tr class="table-info">
+          <td colspan="5">Users Not Found</td>
+         </tr>
+         <%
+        }
+    %>
+
+    </table>
+    <br>
+
+    
+
+      
+      </div>
+    <% include("../layouts/footer.ejs") %>
