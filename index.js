@@ -3,7 +3,7 @@ mongoose.set('strictQuery', false);
 // mongoose.connect('mongodb://127.0.0.1:27017/user_management_system',
 //     console.log("Mongodb connected.................")
 // );
-mongoose.connect('mongodb+srv://abhitekalkar21:jsBdwqzIOYbpnlCQ@cluster0.vth4puw.mongodb.net/',
+mongoose.connect('<ur-mongo-url>',
     console.log("Mongodb connected.................")
 );
 const express = require("express");
