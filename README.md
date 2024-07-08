@@ -16,11 +16,11 @@ user login and registeration features:-
 5. user profile & edit save
 
 Admin Panel features :- 
-1.admin login
-2.Admin reset password
-3.Admin profile
-4.Admin Dashboard
-5.Users list
-6.Add a new user with a role
-7.Edit & save the user
-8.Delete user
+1. admin login
+2. Admin reset password
+3. Admin profile
+4. Admin Dashboard
+5. Users list
+6. Add a new user with a role
+7. Edit & save the user
+8. Delete user
