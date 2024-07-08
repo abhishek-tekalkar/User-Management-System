@@ -22,15 +22,3 @@ Admin Panel features :-
 6.Add a new user with a role
 7.Edit & save the user
 8.Delete user
-
-
-
-
-
-
-
-
-
-
-2.
-
